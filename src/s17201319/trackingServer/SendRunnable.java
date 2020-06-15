@@ -65,7 +65,7 @@ public class SendRunnable implements Runnable{
                 e.printStackTrace();
             }
             ipInfo  = new IpInfo(ipInfo.getIp(),ipInfo.getPort());
-            uploadFilePath = IniRwUtils.getValueByKey(cs.getMd5Path(),md5);
+            uploadFilePath = IniRwUtils.getValueByKey("D:\\P2PDownload\\md5.ini",md5);
             File file = new File(uploadFilePath);
             byte[] infos = new byte[size - 1024];
             System.out.println("处理文件" + file.getName() + "中...");

@@ -68,7 +68,7 @@ public class IniRwUtils {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("另一个程序正在使用此文件，进程无法访问。");
         }
         return map;
     }

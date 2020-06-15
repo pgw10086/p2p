@@ -20,7 +20,7 @@ import static s17201319.resources.IniRwUtils.updateMd5Ini;
  * @author 17201319
  */
 public class ClientBlock {
-    private static Map<Integer, ArrayList<FileBlock>> map = new HashMap<>();
+    private Map<Integer, ArrayList<FileBlock>> map = new HashMap<>();
     private int blockNum;
     //种子文件信息，包含了文件信息
     private Torrent torrent;
@@ -67,8 +67,6 @@ public class ClientBlock {
         }
     }
 
-
-
     /**
      * 创建文件
      * @param fileBlocks 文件的所有文件块
@@ -91,10 +89,11 @@ public class ClientBlock {
                 fos.write(in);
             }
             System.out.println("文件" + torrent.getFileName() + "传输结束");
-            upLabel("传输完成");
-
+            upLabel(torrent.getFileName() + "下载成功");
+            //清空，释放内存
+            fileBlocks.clear();
         } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            upLabel(torrent.getFileName() + "下载成功.");
         } catch (IOException e) {
             e.printStackTrace();
         }

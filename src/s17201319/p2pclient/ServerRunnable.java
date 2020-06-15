@@ -23,6 +23,7 @@ public class ServerRunnable implements Runnable{
     private volatile boolean flag = true;
     private String serverIp;
     private Label linkLabel;
+    private Label maxLabel;
     private volatile int currLink = 0;
 
     @Override
@@ -52,17 +53,22 @@ public class ServerRunnable implements Runnable{
         this.linkLabel = linkLabel;
     }
 
+    public void setMaxLabel(Label maxLabel) {
+        this.maxLabel = maxLabel;
+    }
+
     public int getMaxLink() {
         return maxLink;
     }
 
     public synchronized void setMaxLink(int maxLink) {
         this.maxLink = maxLink;
+        updateLabel(String.valueOf(maxLink),maxLabel);
     }
 
-    public void updateLabel(String info){
+    public void updateLabel(String info,Label label){
         Platform.runLater(() -> {
-            linkLabel.setText(info);
+            label.setText(info);
         });
     }
 
@@ -72,7 +78,7 @@ public class ServerRunnable implements Runnable{
 
     public synchronized void setCurrLink(int currLink) {
         this.currLink = currLink;
-        updateLabel(String.valueOf(currLink));
+        updateLabel(String.valueOf(currLink),linkLabel);
     }
 
     public void setFlag(boolean flag) {

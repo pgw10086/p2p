@@ -26,6 +26,7 @@ public class OnLineRecordRunnable implements Runnable{
         try(DatagramSocket socket = new DatagramSocket(9990)){
             while (true){
                 socket.receive(packet);
+                System.out.println(online.toString());
                 List<String> list = (List<String>) ByteUtils.byteToObj(
                         Arrays.copyOfRange(packet.getData(),0,packet.getLength()));
                 if (Integer.parseInt(list.get(list.size() - 1)) > 0){

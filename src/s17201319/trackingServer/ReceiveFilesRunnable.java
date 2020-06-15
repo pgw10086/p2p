@@ -80,12 +80,6 @@ public class ReceiveFilesRunnable implements Runnable {
         }
     }
 
-    public void merge(byte[] b1,long start,byte[] b2,long length){
-        for (long i = start; i < start + length; i++) {
-            b1[(int) i] = b2[(int) (i - start)];
-        }
-    }
-
     public void createFile() {
         //对list排序
         fileBlocks.sort(FileBlock::compareTo);

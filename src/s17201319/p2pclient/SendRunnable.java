@@ -71,7 +71,7 @@ public class SendRunnable implements Runnable{
                 int num = 0;
                 raf.seek((start - 1) * (size - 1024));
                 while (num < (end - start + 1)) {
-                    System.out.println(upData.size());
+//                    System.out.println(upData.size());
                     num++;
                     int blockLen = raf.read(infos);
                     FileBlock fileBlock = new FileBlock(file.getName(), num + start,
@@ -105,12 +105,11 @@ public class SendRunnable implements Runnable{
                     sendId ++;
                     failTime = 0;
                 }
-                Thread.sleep(10);
+                Thread.sleep(5);
 //                schedule = String.format("%.2f",(sendId - 1)  * 100.0 / upData.size()) + "%";
 //                System.out.println("上传进度：" + String.format("%.2f",(sendId - 1)  * 100.0 / upData.size()) + "%");
             }
-            System.out.println("发送线程" + Thread.currentThread().getName() + "结束");
-            serverRunnable.setCurrLink(serverRunnable.getCurrLink() - 1);
+
         } catch (SocketException e) {
             e.printStackTrace();
         } catch (UnknownHostException e) {
@@ -122,6 +121,8 @@ public class SendRunnable implements Runnable{
         } catch (InterruptedException e) {
 
         }
+        System.out.println("发送线程" + Thread.currentThread().getName() + "结束");
+        serverRunnable.setCurrLink(serverRunnable.getCurrLink() - 1);
     }
 
     public boolean sendFile(DatagramSocket socket,DatagramPacket fileInfoPacket,int n) throws IOException {

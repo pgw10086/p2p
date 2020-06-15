@@ -92,7 +92,7 @@ public class UpLoadRunnable implements Runnable{
                     bytes,bytes.length,ipInfo.getIp(),ipInfo.getPort());
             socket.send(fileInfoPacket);
             DatagramPacket response = new DatagramPacket(new byte[SIZE],SIZE);
-            upLabel("链接追踪器。..");
+            upLabel("链接追踪器...");
             for (int i = 0; i < 3; i++) {
                 try{
                     socket.receive(response);
@@ -116,7 +116,7 @@ public class UpLoadRunnable implements Runnable{
                 //多于2个文件块发送失败
                 if (failTime > 2){
                     System.out.println("发送线程" + Thread.currentThread().getName() + "可能暂时无法连接服务器，请稍后再试");
-                    upLabel("发送线程" + Thread.currentThread().getName() + "可能暂时无法连接服务器，请稍后再试");
+                    upLabel("可能暂时无法连接服务器，请稍后再试");
                     break;
                 }
                 Message block = new Message(file.getName(),sendId,1, ByteUtils.objToByte(upData.get(i)));

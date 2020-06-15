@@ -47,7 +47,7 @@ public class GenerateTorrentRunnable implements Runnable {
         IniRwUtils.updateMd5Ini(torrentPath + "\\md5.ini",filePath);
         upLabel("生成文件中...");
         TorrentUtils.createTorrent(torrent, torrentPath + "\\" + torrent.getFileName() + ".torrent");
-        upLabel("torrent地址：" + torrentPath + "\\" + torrent.getFileName() + ".torrent");
+        upLabel("torrent地址：" + torrentPath);
     }
     public void init() {
         File file = new File(torrentPath);

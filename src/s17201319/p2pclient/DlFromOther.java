@@ -130,6 +130,7 @@ public class DlFromOther implements Runnable{
         } catch (SocketException e) {
         } catch (IOException e) {
             System.out.println("接收超时，" + Thread.currentThread().getName() + "结束");
+            upLabel("超时");
             clientBlock.upLabel("接收超时，种子文件下载失败");
         }
     }
