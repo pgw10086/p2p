@@ -39,6 +39,7 @@ public class DownLoadRunnable implements Runnable{
 
     @Override
     public void run() {//17201319
+        Client.setDlNum(Client.getDlNum() + 1);
         if (IniRwUtils.getValueByKey(cs.getMd5Path() ,torrent.getMd5()) != null){
             Label infoLabel = new Label("md5.ini中存在" + torrent.getFileName() + "md5值\n"
             + "请打开种子文件目录的.ini确认文件所在路径");
@@ -53,7 +54,6 @@ public class DownLoadRunnable implements Runnable{
                 System.out.println("对象转字节失败");
                 return;
             }
-            Client.setDlNum(Client.getDlNum() + 1);
             DatagramPacket packet = new DatagramPacket(
                     bytes,bytes.length, InetAddress.getByName(ip),port);
             socket.send(packet);
@@ -83,31 +83,56 @@ public class DownLoadRunnable implements Runnable{
             }else {
                 upLabel(infoLabel,"下载文件：" + torrent.getFileName());
             }
-            blockNum = torrent.getFileBlockSize() / list.size();
-            if (torrent.getFileBlockSize() % list.size() > 0){
-                blockNum ++;
-            }
-            ArrayList<Label> labels = new ArrayList<>();
-
-            for (int i = 0; i < list.size(); i++) {
-                labels.add(new Label());
-            }
-
-            //文件块存储对象
-            ClientBlock clientBlock = new ClientBlock(blockNum,torrent,list.size(),infoLabel);
-            for (int i = 1; i <= list.size(); i++) {
-                //将ip放在面板上
-                addIpJd(list.get(i - 1),i,labels.get(i - 1));
-                BlockInfo blockInfo;
-                //为最后一个接收子线程
-                if (i == list.size()){
-                    blockInfo = new BlockInfo((i - 1) * blockNum + 1,torrent.getFileBlockSize(),torrent.getMd5());
-                }else {
-                    blockInfo = new BlockInfo((i - 1) * blockNum + 1,i * blockNum,torrent.getMd5());
+            if (torrent.getFileBlockSize() < list.size()){
+                ArrayList<Label> labels = new ArrayList<>();
+                blockNum = 1;
+                for (int i = 0; i < torrent.getFileBlockSize(); i++) {
+                    labels.add(new Label());
                 }
-                //提交线程到线程池中
-                Client.pool.submit(new DlFromOther(i,IpInfo.createIpInfo(list.get(i - 1)),blockInfo,clientBlock,labels.get(i -1)));
+
+                //文件块存储对象
+                ClientBlock clientBlock = new ClientBlock(blockNum,torrent,torrent.getFileBlockSize(),infoLabel);
+                for (int i = 1; i <= torrent.getFileBlockSize(); i++) {
+                    //将ip放在面板上
+                    addIpJd(list.get(i - 1),i,labels.get(i - 1));
+                    BlockInfo blockInfo;
+                    //为最后一个接收子线程
+                    if (i == list.size()){
+                        blockInfo = new BlockInfo((i - 1) * blockNum + 1,torrent.getFileBlockSize(),torrent.getMd5());
+                    }else {
+                        blockInfo = new BlockInfo((i - 1) * blockNum + 1,i * blockNum,torrent.getMd5());
+                    }
+                    //提交线程到线程池中
+                    Client.pool.submit(new DlFromOther(i,IpInfo.createIpInfo(list.get(i - 1)),blockInfo,clientBlock,labels.get(i -1)));
+                }
+            }else {
+                blockNum = torrent.getFileBlockSize() / list.size();
+                if (torrent.getFileBlockSize() % list.size() > 0){
+                    blockNum ++;
+                }
+                ArrayList<Label> labels = new ArrayList<>();
+
+                for (int i = 0; i < list.size(); i++) {
+                    labels.add(new Label());
+                }
+
+                //文件块存储对象
+                ClientBlock clientBlock = new ClientBlock(blockNum,torrent,list.size(),infoLabel);
+                for (int i = 1; i <= list.size(); i++) {
+                    //将ip放在面板上
+                    addIpJd(list.get(i - 1),i,labels.get(i - 1));
+                    BlockInfo blockInfo;
+                    //为最后一个接收子线程
+                    if (i == list.size()){
+                        blockInfo = new BlockInfo((i - 1) * blockNum + 1,torrent.getFileBlockSize(),torrent.getMd5());
+                    }else {
+                        blockInfo = new BlockInfo((i - 1) * blockNum + 1,i * blockNum,torrent.getMd5());
+                    }
+                    //提交线程到线程池中
+                    Client.pool.submit(new DlFromOther(i,IpInfo.createIpInfo(list.get(i - 1)),blockInfo,clientBlock,labels.get(i -1)));
+                }
             }
+
         } catch (SocketException e) {
             System.out.println("异常结束");
         } catch (IOException e) {

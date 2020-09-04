@@ -1,18 +1,13 @@
 package s17201319.trackingServer;
 
-import s17201319.resources.ByteUtils;
-import s17201319.resources.IniRwUtils;
-import s17201319.resources.IpInfo;
-import s17201319.resources.Message;
+import s17201319.resources.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
+import java.net.*;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -22,10 +17,12 @@ import java.util.concurrent.Executors;
  * 当一个对等方进入p2p网络时，必须向追踪器登记，并周期性的通知追踪器其仍在网络中。
  */
 public class TrackingDevice {
+    private static TrackingSetting ts = TrackingSetting.getTs();
+
     //线程池大小
     private static final int THREAD_COUNT = 100;
     //传输文件大小
-    private static final int SIZE = 1024 * 63;
+    private static final int SIZE = ts.getSize();
     //存有的文件数量
     private static volatile int fileNum;
     //线程池
@@ -33,7 +30,7 @@ public class TrackingDevice {
 
     public static void main(String[] args) {
         //接收文件存储位置
-        File file = new File("D:\\P2PDownload");
+        File file = new File(ts.getDownloadPath());
         fileNum = file.list().length;
         pool = Executors.newFixedThreadPool(THREAD_COUNT);
         pool.submit(new OnLineRecordRunnable());
@@ -92,6 +89,8 @@ public class TrackingDevice {
             }
         }
     }
+
+
 
     public static int getFileNum(){
         return fileNum;

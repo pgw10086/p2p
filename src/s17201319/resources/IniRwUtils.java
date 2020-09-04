@@ -12,6 +12,7 @@ import java.util.Properties;
 public class IniRwUtils {
 
     public static void updateMd5Ini(String md5Path,String filePath){
+
         File md5File = new File(md5Path);
         if (!md5File.exists()){
             try {

@@ -12,8 +12,9 @@ import java.util.*;
  * @author 172013119
  */
 public class OnLineRecordRunnable implements Runnable{
+    TrackingSetting ts = TrackingSetting.getTs();
     //packet大小
-    private final int SIZE = 1024 * 63;
+    private final int size = ts.getSize();
 
     //ip:port + 该ip所拥有的资源md5
     private static volatile Map<String,List<String>> online = new HashMap<>();
@@ -22,11 +23,11 @@ public class OnLineRecordRunnable implements Runnable{
     @Override
     public void run() {
         TrackingDevice.pool.submit(new CheckTimeRunnable());
-        DatagramPacket packet = new DatagramPacket(new byte[SIZE],SIZE);
+        DatagramPacket packet = new DatagramPacket(new byte[size],size);
         try(DatagramSocket socket = new DatagramSocket(9990)){
             while (true){
                 socket.receive(packet);
-                System.out.println(online.toString());
+//                System.out.println(online.toString());
                 List<String> list = (List<String>) ByteUtils.byteToObj(
                         Arrays.copyOfRange(packet.getData(),0,packet.getLength()));
                 if (Integer.parseInt(list.get(list.size() - 1)) > 0){

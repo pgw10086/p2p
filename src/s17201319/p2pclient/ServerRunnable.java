@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import javafx.scene.control.Label;
 import s17201319.resources.ByteUtils;
 import s17201319.resources.IpInfo;
+import s17201319.resources.TorrentUtils;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -33,7 +34,7 @@ public class ServerRunnable implements Runnable{
             OnlineRunnable online = new OnlineRunnable(socket,this);
             Client.pool.submit(online);
             serverIp = InetAddress.getLocalHost().getHostAddress() + ":" + socket.getLocalPort();
-            System.out.println(serverIp);
+//            System.out.println(serverIp);
             while (flag){
                 socket.receive(packet);
                 IpInfo ipInfo = new IpInfo(packet.getAddress(),packet.getPort());

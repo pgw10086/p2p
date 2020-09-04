@@ -71,10 +71,10 @@ public class Md5Utils {
             return "md5:"+md5+" time:"+((end-begin)/1000)+"s";
         }
 //
-//        public static void main(String[] args) throws IOException {
-//            System.out.println(getMd5("D:\\百度破解\\《Python 3网络爬虫开发实战》中文PDF+源代码.rar"));
-//            System.out.println(getMd5("D:\\AAA\\27_《Python 3网络爬虫开发实战》中文PDF+源代码.rar"));
-//        }
+        public static void main(String[] args) throws IOException {
+            System.out.println(getMd5("D:\\P2PDownload\\13_21.png"));
+            System.out.println(getMd5("D:\\大学作业\\大三下\\java网络编程\\大作业\\21.png"));
+        }
 
 
 

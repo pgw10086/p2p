@@ -12,7 +12,7 @@ public class ClientSetting {
     //包大小
     private int packetSize = 1024 * 63;
     //追踪器地址
-    private String trackingIp = "10.30.1.73";
+    private String trackingIp = "10.30.0.198";
     //追踪器端口号
     private int trackingPort = 9999;
     //追踪器告知在线的端口号

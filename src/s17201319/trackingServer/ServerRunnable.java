@@ -6,6 +6,7 @@ import s17201319.p2pclient.BlockInfo;
 import s17201319.p2pclient.ClientSetting;
 import s17201319.resources.ByteUtils;
 import s17201319.resources.IpInfo;
+import s17201319.resources.TorrentUtils;
 
 import java.io.IOException;
 import java.net.DatagramPacket;
@@ -19,8 +20,8 @@ import java.util.Arrays;
  * @author 17201319
  */
 public class ServerRunnable implements Runnable{
-    private ClientSetting cs = ClientSetting.getClientSetting();
-    private final int size = cs.getPacketSize();
+    private TrackingSetting ts = TrackingSetting.getTs();
+    private final int size = ts.getSize();
     private int maxLink = 1000;
     private volatile boolean flag = true;
     private String serverIp;
@@ -32,7 +33,7 @@ public class ServerRunnable implements Runnable{
         DatagramPacket packet = new DatagramPacket(new byte[size],size);
         try(DatagramSocket socket = new DatagramSocket(0)){
             System.out.println("启动");
-            OnlineRunnable online = new OnlineRunnable("D:\\P2PDownload\\md5.ini",socket,this);
+            OnlineRunnable online = new OnlineRunnable(ts.getDownloadPath() + "\\md5.ini",socket,this);
             TrackingDevice.pool.submit(online);
             serverIp = InetAddress.getLocalHost().getHostAddress() + ":" + socket.getLocalPort();
             System.out.println(serverIp);

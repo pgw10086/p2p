@@ -17,17 +17,12 @@ import java.util.List;
  * @author 17201319
  */
 public class OnlineRunnable implements Runnable{
-    private ClientSetting cs = ClientSetting.getClientSetting();
-    private String ip = cs.getTrackingIp();
-    private int port = cs.getOnlinePort();
-    private String md5Path = cs.getMd5Path();
+    private TrackingSetting ts = TrackingSetting.getTs();
+    private String ip = ts.getTrackingIp();
+    private int port = ts.getOnlinePort();
+    private String md5Path;
     private DatagramSocket socket;
     private ServerRunnable server;
-
-    public OnlineRunnable(DatagramSocket socket, ServerRunnable server) {
-        this.socket = socket;
-        this.server = server;
-    }
 
     public OnlineRunnable(String md5Path, DatagramSocket socket, ServerRunnable server) {
         this.md5Path = md5Path;
